@@ -76,3 +76,5 @@ body { font-family: var(--font); color: var(--paper); touch-action: none; user-s
 .title-help { font-size: 13px; opacity: .6; max-width: 280px; }
 .blink { animation: blink 1.1s steps(2) infinite; }
 @keyframes blink { 50% { opacity: 0; } }
+
+.title-3d { color: #f0c93a; font-size: 15px; text-decoration: none; border: 2px solid #f0c93a; border-radius: 8px; padding: 6px 12px; }

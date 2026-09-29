@@ -1,0 +1,13 @@
+#screen canvas.three { position: absolute; inset: 0; width: 100%; height: 100%; display: block; touch-action: none; }
+#banner, #dialog, #fade, #title, #prompt { z-index: 3; }
+#prompt { position: absolute; top: 12px; right: 12px; background: var(--paper); color: var(--ink); border: 3px solid var(--ink); border-radius: 6px; padding: 4px 10px; font-size: 15px; font-weight: 600; pointer-events: none; }
+#prompt[hidden] { display: none; }
+#err { max-width: 320px; font: 12px/1.3 ui-monospace, monospace; color: #ffb4a8; word-break: break-word; }
+
+/* joystick */
+#stick { position: relative; width: 150px; height: 150px; border-radius: 50%; background: radial-gradient(circle, #1b1521 0 55%, #120d16 56% 100%); box-shadow: 0 4px 0 #07050a, inset 0 0 0 4px #2d2337; touch-action: none; }
+#knob { position: absolute; left: 50%; top: 50%; width: 64px; height: 64px; margin: -32px 0 0 -32px; border-radius: 50%; background: #4a3f55; box-shadow: 0 3px 0 #07050a, inset 0 4px 0 #625570; }
+@media (orientation: landscape) {
+  #stick { width: 130px; height: 130px; opacity: .72; pointer-events: auto; }
+  #knob { width: 56px; height: 56px; margin: -28px 0 0 -28px; }
+}

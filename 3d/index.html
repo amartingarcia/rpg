@@ -1,0 +1,53 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover">
+  <meta name="theme-color" content="#231a2b">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="mobile-web-app-capable" content="yes">
+  <title>Jaraíz 3D</title>
+  <link rel="icon" href="../icon.svg" type="image/svg+xml">
+  <link href="https://fonts.googleapis.com/css2?family=Pixelify+Sans:wght@400;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../css/style.css">
+  <link rel="stylesheet" href="3d.css">
+</head>
+<body>
+  <div id="app">
+    <div id="screen">
+      <div id="prompt" hidden>A · Hablar</div>
+      <div id="banner"></div>
+      <div id="dialog" hidden>
+        <div id="dialog-name" hidden></div>
+        <div id="dialog-text"></div>
+        <div id="dialog-arrow">▼</div>
+      </div>
+      <div id="fade"></div>
+      <div id="title">
+        <div class="title-box">
+          <div class="title-small">Aventuras en 3D</div>
+          <h1>PLAZA DE<br>JARAÍZ</h1>
+          <div class="title-pepper">🌶️</div>
+        </div>
+        <div id="title-start" class="blink">Cargando…</div>
+        <div class="title-help">Joystick para andar · Arrastra la pantalla para mirar · A para hablar · B (mantener) para correr</div>
+        <div id="err"></div>
+      </div>
+    </div>
+    <div id="pad">
+      <div id="stick"><div id="knob"></div></div>
+      <div id="ab">
+        <button id="btnB" aria-label="B">B</button>
+        <button id="btnA" aria-label="A">A</button>
+      </div>
+    </div>
+  </div>
+  <script>
+    // Si algo falla, lo mostramos en pantalla para poder arreglarlo
+    function showErr(m) { var e = document.getElementById('err'); if (e) e.textContent = m; var s = document.getElementById('title-start'); if (s) { s.textContent = 'Error'; s.classList.remove('blink'); } }
+    window.addEventListener('error', function (ev) { showErr(ev.message + ' (' + (ev.filename || '').split('/').pop() + ':' + ev.lineno + ')'); });
+    window.addEventListener('unhandledrejection', function (ev) { showErr(String(ev.reason && ev.reason.message || ev.reason)); });
+  </script>
+  <script type="module" src="main.js"></script>
+</body>
+</html>
