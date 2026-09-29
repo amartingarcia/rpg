@@ -230,6 +230,24 @@ function desk(c) { floorWood(c); px(c, 1, 3, '#5a3a22', 14, 10); px(c, 1, 3, '#8
 function plant(c) { floorWood(c); px(c, 5, 10, '#a4553a', 6, 5); px(c, 3, 2, '#2f7a3a', 10, 8); px(c, 5, 1, '#3f9449', 6, 3); px(c, 4, 4, '#4ca656', 3, 3); }
 function rug(c) { floorWood(c); px(c, 1, 1, '#8a2432', 14, 14); px(c, 3, 3, '#e6c35c', 10, 10); px(c, 5, 5, '#8a2432', 6, 6); }
 function exitMat(c) { floorWood(c); px(c, 2, 4, '#3f9a4a', 12, 9); px(c, 3, 5, '#56b262', 10, 7); px(c, 6, 7, '#f1ece0', 4, 1); px(c, 6, 9, '#f1ece0', 4, 1); }
+function wallCases(c) {
+  wallIn(c);
+  const cols = ['#d23b3b', '#3b68d2', '#f0c93a', '#3f9a4a', '#8a4fc4', '#ef8fb7', '#ec8a2c', '#7ec1ec'];
+  for (let i = 0; i < 4; i++) for (let j = 0; j < 2; j++) {
+    const col = cols[(i * 3 + j * 5) % cols.length];
+    px(c, 1 + i * 4, 1 + j * 5, '#2a1d1a', 3, 5); px(c, 1 + i * 4, 1 + j * 5, col, 3, 4); px(c, 2 + i * 4, 2 + j * 5, shade(col, 0.4), 1, 1);
+  }
+}
+function rack(c) {
+  floorWood(c); px(c, 2, 1, '#5a3a22', 12, 14);
+  const cols = ['#d23b3b', '#3b68d2', '#f0c93a', '#3f9a4a', '#8a4fc4', '#ef8fb7'];
+  for (let j = 0; j < 3; j++) for (let i = 0; i < 4; i++) { px(c, 3 + i * 3, 2 + j * 4, cols[(i + j * 2) % cols.length], 2, 3); }
+}
+function wallDark(c) { px(c, 0, 0, '#3a2438', T, T); px(c, 0, 11, '#24162a', T, 5); px(c, 0, 0, '#4a2f47', T, 1); }
+function screen(c) { px(c, 0, 0, '#3a2438', T, T); px(c, 0, 1, '#eeeeee', T, 13); px(c, 0, 1, '#cfd8e8', T, 2); px(c, 0, 13, '#bcc4d4', T, 1); }
+function seat(c) { floorDark(c); px(c, 2, 5, '#a82c2c', 12, 8); px(c, 3, 2, '#8a2432', 10, 5); px(c, 2, 12, '#6a1a24', 12, 1); }
+function floorDark(c) { px(c, 0, 0, '#5a2a3a', T, T); px(c, 0, 8, '#4d2331', T, 1); px(c, 8, 0, '#4d2331', 1, 8); }
+function popcorn(c) { floorDark(c); px(c, 0, 4, '#8a2432', T, 11); px(c, 0, 4, '#c9433a', T, 3); px(c, 4, 1, '#ffffff', 8, 4); for (let i = 0; i < 4; i++) px(c, 5 + i * 2, 0, '#f5de8a', 2, 2); px(c, 4, 1, '#d23b3b', 1, 4); px(c, 11, 1, '#d23b3b', 1, 4); }
 function black(c) { px(c, 0, 0, '#141018', T, T); }
 
 // ---------- registro ----------
@@ -257,6 +275,9 @@ const TILES = {
   altar: { draw: altar, solid: true }, retablo: { draw: retablo, solid: true },
   vitrina: { draw: vitrina, solid: true }, sack: { draw: sack, solid: true },
   bed: { draw: bed, solid: true }, desk: { draw: desk, solid: true }, plant: { draw: plant, solid: true },
+  wall_cases: { draw: wallCases, solid: true }, rack: { draw: rack, solid: true },
+  wall_dark: { draw: wallDark, solid: true }, screen: { draw: screen, solid: true }, seat: { draw: seat, solid: true },
+  floor_dark: { draw: floorDark }, popcorn: { draw: popcorn, solid: true },
   rug: { draw: rug }, exit: { draw: exitMat }, black: { draw: black, solid: true },
 };
 

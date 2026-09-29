@@ -1,30 +1,54 @@
 {
   "_ayuda": {
-    "mapa": "pueblo, bar, iglesia, museo, ayuntamiento, casa",
+    "mapa": "pueblo, bar, iglesia, museo, ayuntamiento, casa, carcasas, cine",
     "mira": "down, up, left, right",
     "pasea": "true = da vueltas cerca de su sitio; false = se queda quieto",
     "piel": "clara, media, morena, oscura (o un color #rrggbb)",
     "pelo": "negro, castaño, rubio, pelirrojo, canoso, blanco, gris (o #rrggbb)",
     "peinado": "corto, largo, coleta, moño, rizado, cresta, calvo",
     "ropa": "camiseta, pantalon y zapatos: rojo, azul, celeste, verde, amarillo, naranja, morado, rosa, marrón, beige, vaquero, granate, caqui, negro, blanco, gris (o #rrggbb)",
-    "extras": "barba: true, gafas: true, gorra: true o un color, vestido: true",
+    "extras": "barba: true, gafas: true, gorra: true o un color, vestido: true, musculoso: true, gordito: true",
     "frases": "cada vez que hablas con alguien dice una frase distinta. Si una frase es una lista [\"...\", \"...\"], se muestra en varias páginas seguidas."
   },
-
   "jugador": {
     "nombre": "Tú",
-    "inicio": { "mapa": "pueblo", "x": 5, "y": 26, "mira": "down" },
-    "apariencia": { "piel": "media", "pelo": "castaño", "peinado": "corto", "camiseta": "rojo", "pantalon": "vaquero" }
+    "inicio": {
+      "mapa": "pueblo",
+      "x": 5,
+      "y": 26,
+      "mira": "down"
+    },
+    "apariencia": {
+      "piel": "media",
+      "pelo": "castaño",
+      "peinado": "corto",
+      "camiseta": "rojo",
+      "pantalon": "vaquero"
+    }
   },
-
   "personajes": [
     {
       "id": "tio-julian",
       "nombre": "Tío Julián (ejemplo)",
-      "mapa": "pueblo", "x": 17, "y": 13, "mira": "down", "pasea": false,
-      "apariencia": { "piel": "morena", "pelo": "canoso", "peinado": "calvo", "barba": true, "camiseta": "beige", "pantalon": "marrón", "gorra": "gris" },
+      "mapa": "pueblo",
+      "x": 17,
+      "y": 13,
+      "mira": "down",
+      "pasea": false,
+      "apariencia": {
+        "piel": "morena",
+        "pelo": "canoso",
+        "peinado": "calvo",
+        "barba": true,
+        "camiseta": "beige",
+        "pantalon": "marrón",
+        "gorra": "gris"
+      },
       "frases": [
-        ["¿Ves los lobos de lo alto del rollo?", "Están ahí desde 1689, vigilando la plaza. Como yo."],
+        [
+          "¿Ves los lobos de lo alto del rollo?",
+          "Están ahí desde 1689, vigilando la plaza. Como yo."
+        ],
         "Aquí el pimentón se ahúma con encina. El de fuera no sabe igual, no.",
         "Yo a tu edad me bajaba al Lago todas las tardes de agosto."
       ]
@@ -32,30 +56,68 @@
     {
       "id": "mari",
       "nombre": "Mari (ejemplo)",
-      "mapa": "bar", "x": 4, "y": 2, "mira": "down", "pasea": false,
-      "apariencia": { "piel": "clara", "pelo": "negro", "peinado": "coleta", "camiseta": "verde", "pantalon": "negro" },
+      "mapa": "bar",
+      "x": 4,
+      "y": 2,
+      "mira": "down",
+      "pasea": false,
+      "apariencia": {
+        "piel": "clara",
+        "pelo": "negro",
+        "peinado": "coleta",
+        "camiseta": "verde",
+        "pantalon": "negro"
+      },
       "frases": [
         "¿Lo de siempre?",
-        ["¿Has visto a los demás?", "Dijeron que venían a las nueve... y ya son las diez."],
+        [
+          "¿Has visto a los demás?",
+          "Dijeron que venían a las nueve... y ya son las diez."
+        ],
         "Hoy hay patatas revolconas de tapa. Tú verás."
       ]
     },
     {
       "id": "chaval-lago",
       "nombre": "Dani (ejemplo)",
-      "mapa": "pueblo", "x": 36, "y": 9, "mira": "right", "pasea": true,
-      "apariencia": { "piel": "media", "pelo": "rubio", "peinado": "cresta", "camiseta": "amarillo", "pantalon": "azul", "gafas": true },
+      "mapa": "pueblo",
+      "x": 36,
+      "y": 9,
+      "mira": "right",
+      "pasea": true,
+      "apariencia": {
+        "piel": "media",
+        "pelo": "rubio",
+        "peinado": "cresta",
+        "camiseta": "amarillo",
+        "pantalon": "azul",
+        "gafas": true
+      },
       "frases": [
         "¡El agua está helada! Pero te acostumbras en cinco minutos.",
         "¿Un chapuzón? Venga, que no muerde.",
-        ["He tirado una piedra y ha rebotado cuatro veces.", "Bueno... tres."]
+        [
+          "He tirado una piedra y ha rebotado cuatro veces.",
+          "Bueno... tres."
+        ]
       ]
     },
     {
       "id": "rosi",
       "nombre": "Señora Rosi (ejemplo)",
-      "mapa": "iglesia", "x": 2, "y": 4, "mira": "right", "pasea": false,
-      "apariencia": { "piel": "clara", "pelo": "gris", "peinado": "moño", "camiseta": "granate", "vestido": true, "gafas": true },
+      "mapa": "iglesia",
+      "x": 2,
+      "y": 4,
+      "mira": "right",
+      "pasea": false,
+      "apariencia": {
+        "piel": "clara",
+        "pelo": "gris",
+        "peinado": "moño",
+        "camiseta": "granate",
+        "vestido": true,
+        "gafas": true
+      },
       "frases": [
         "Shhh... que esto es una iglesia, hijo.",
         "¿Has visto el retablo? Todo de oro, dicen. Yo no he mirado de cerca."
@@ -64,12 +126,101 @@
     {
       "id": "vecino-plaza",
       "nombre": "Luis (ejemplo)",
-      "mapa": "pueblo", "x": 22, "y": 13, "mira": "left", "pasea": true,
-      "apariencia": { "piel": "media", "pelo": "negro", "peinado": "rizado", "camiseta": "azul", "pantalon": "caqui" },
+      "mapa": "pueblo",
+      "x": 22,
+      "y": 13,
+      "mira": "left",
+      "pasea": true,
+      "apariencia": {
+        "piel": "media",
+        "pelo": "negro",
+        "peinado": "rizado",
+        "camiseta": "azul",
+        "pantalon": "caqui"
+      },
       "frases": [
         "¡Ey! ¿Te vienes luego al bar?",
         "Dicen que por la noche en la plaza se oye aullar a los lobos del rollo. Yo no me lo creo.",
         "Este finde hay fiesta. ¿Te apuntas?"
+      ]
+    },
+    {
+      "id": "ismael",
+      "nombre": "Ismael",
+      "mapa": "carcasas",
+      "x": 5,
+      "y": 2,
+      "mira": "down",
+      "pasea": false,
+      "apariencia": {
+        "piel": "clara",
+        "pelo": "castaño",
+        "peinado": "corto",
+        "camiseta": "azul",
+        "pantalon": "vaquero",
+        "zapatos": "blanco"
+      },
+      "frases": [
+        "¡Bienvenido a la Casa de las Carcasas!",
+        "¿Qué móvil tienes? Seguro que le tengo funda.",
+        [
+          "Lo mío es que cada móvil tenga su carcasa.",
+          "Y que salga desde Jaraíz."
+        ],
+        "Hoy han llegado colores nuevos. Echa un ojo."
+      ]
+    },
+    {
+      "id": "pulido",
+      "nombre": "Pulido",
+      "mapa": "pueblo",
+      "x": 36,
+      "y": 12,
+      "mira": "down",
+      "pasea": false,
+      "apariencia": {
+        "piel": "media",
+        "pelo": "negro",
+        "peinado": "corto",
+        "camiseta": "negro",
+        "pantalon": "gris",
+        "musculoso": true
+      },
+      "frases": [
+        "¿Entrenas? Hoy toca pierna. Bueno, hoy siempre toca pierna.",
+        "Mira este bíceps. Vamos, tócalo.",
+        [
+          "Cinco series de doce.",
+          "Y luego una tapa, que hay que recuperarse."
+        ],
+        "El agua del lago viene fresquita: ideal para enfriar los músculos."
+      ]
+    },
+    {
+      "id": "juanjo",
+      "nombre": "Juanjo",
+      "mapa": "cine",
+      "x": 5,
+      "y": 3,
+      "mira": "down",
+      "pasea": false,
+      "apariencia": {
+        "piel": "clara",
+        "pelo": "castaño",
+        "peinado": "corto",
+        "camiseta": "verde",
+        "pantalon": "vaquero",
+        "gafas": true,
+        "gordito": true
+      },
+      "frases": [
+        "Shhh, que va a empezar la peli.",
+        "¿Palomitas? Yo ya voy por el segundo cubo.",
+        [
+          "¿Has visto los tráilers?",
+          "Yo me los veo todos, hasta los de las pelis que no voy a ver."
+        ],
+        "La mejor butaca es la del medio, fila siete."
       ]
     }
   ]

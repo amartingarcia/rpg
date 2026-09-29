@@ -89,10 +89,12 @@ function buildPueblo() {
   m.set(8, 24, 'sign'); m.sign(8, 24, 'Tu casa.');
 
   // Otras casas (cerradas por ahora: aquí vivirán tus amigos)
-  building(m, 26, 2, 6, 4, { doorX: 3 });
+  building(m, 26, 2, 6, 4, { doorX: 3, warp: 'carcasas' });
+  m.set(30, 6, 'sign'); m.sign(30, 6, 'LA CASA DE LAS CARCASAS\nFundas para el móvil, hechas en Jaraíz.');
   building(m, 11, 28, 5, 4, { doorX: 2 });
   building(m, 18, 28, 5, 4, { doorX: 2 });
-  building(m, 26, 28, 6, 4, { doorX: 3 });
+  building(m, 26, 28, 6, 4, { doorX: 3, warp: 'cine' });
+  m.set(30, 32, 'sign'); m.sign(30, 32, 'CINE\nHoy sesión doble. (Pon aquí la peli que queráis.)');
 
   // Secadero de pimentón y campo de pimientos
   building(m, 26, 20, 5, 4, { wall: 'brick', doorX: 2, closed: 'Un secadero de pimentón. Huele a humo de encina.' });
@@ -181,9 +183,29 @@ function buildCasa() {
   return m;
 }
 
+function buildCarcasas() {
+  const m = room('carcasas', 'La Casa de las Carcasas', 11, 8);
+  m.hline(0, 10, 0, 'wall_cases');
+  m.hline(3, 7, 3, 'counter');
+  m.set(1, 3, 'rack'); m.set(1, 5, 'rack'); m.set(9, 3, 'rack'); m.set(9, 5, 'rack');
+  m.set(3, 5, 'table'); m.set(7, 5, 'table');
+  for (const p of [[1, 3], [1, 5], [9, 3], [9, 5]]) m.sign(p[0], p[1], 'Carcasas de todos los colores. Hay para casi cualquier móvil.');
+  m.sign(3, 5, 'Cargadores y protectores de pantalla.'); m.sign(7, 5, 'Carcasas nuevas recién llegadas.');
+  return m;
+}
+
+function buildCine() {
+  const m = room('cine', 'Cine', 11, 10, 'wall_dark', 'floor_dark');
+  m.hline(2, 8, 0, 'screen'); m.hline(2, 8, 1, 'screen');
+  for (const y of [5, 7]) { m.hline(1, 4, y, 'seat'); m.hline(6, 9, y, 'seat'); }
+  m.set(10, 3, 'popcorn'); m.set(10, 4, 'popcorn');
+  m.sign(10, 3, 'Palomitas. Con mucha mantequilla.'); m.sign(10, 4, 'Refrescos y palomitas.');
+  return m;
+}
+
 export function buildMaps() {
   const maps = {};
-  for (const m of [buildPueblo(), buildBar(), buildIglesia(), buildMuseo(), buildAyuntamiento(), buildCasa()]) maps[m.id] = m;
+  for (const m of [buildPueblo(), buildBar(), buildIglesia(), buildMuseo(), buildAyuntamiento(), buildCasa(), buildCarcasas(), buildCine()]) maps[m.id] = m;
   // enlazar puertas del pueblo con las salidas de cada interior
   const pueblo = maps.pueblo;
   for (const [key, w] of Object.entries(pueblo.warps)) {

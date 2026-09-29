@@ -161,6 +161,23 @@ function applyExtras(g, dir, a) {
   }
 }
 
+function widen(g, rows) {
+  for (const y of rows) {
+    const r = g[y];
+    r.splice(8, 0, r[8]); r.splice(7, 0, r[7]); r.shift(); r.pop();
+  }
+}
+
+function applyBody(g, dir, a) {
+  if (a.gordito) widen(g, [9, 10, 11, 12]);
+  if (a.musculoso) {
+    if (dir === 'left') { widen(g, [9, 10, 11]); return; }
+    for (const y of [10, 11]) { g[y][1] = 'K'; g[y][2] = 'S'; g[y][3] = 'S'; g[y][12] = 'S'; g[y][13] = 'S'; g[y][14] = 'K'; }
+    g[9][2] = 'K'; g[9][3] = 'S'; g[9][12] = 'S'; g[9][13] = 'K';
+    g[12][2] = '.'; g[12][13] = '.';
+  }
+}
+
 function paint(g, a) {
   const piel = color(a.piel, COLORES.clara);
   const pelo = color(a.pelo, COLORES.castano);
@@ -207,6 +224,7 @@ export function buildCharacter(apariencia = {}) {
       g[13] = legs[0].split(''); g[14] = legs[1].split('');
       applyHair(g, dir, estilo);
       applyExtras(g, dir, a);
+      applyBody(g, dir, a);
       return paint(g, a);
     });
   }
