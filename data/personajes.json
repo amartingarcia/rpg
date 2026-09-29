@@ -5,9 +5,9 @@
     "pasea": "true = da vueltas cerca de su sitio; false = se queda quieto",
     "piel": "clara, media, morena, oscura (o un color #rrggbb)",
     "pelo": "negro, castaño, rubio, pelirrojo, canoso, blanco, gris (o #rrggbb)",
-    "peinado": "corto, largo, coleta, moño, rizado, cresta, calvo",
+    "peinado": "corto, largo, coleta, moño, rizado, cresta, entradas, calvo",
     "ropa": "camiseta, pantalon y zapatos: rojo, azul, celeste, verde, amarillo, naranja, morado, rosa, marrón, beige, vaquero, granate, caqui, negro, blanco, gris (o #rrggbb)",
-    "extras": "barba: true, gafas: true, gorra: true o un color, vestido: true, musculoso: true, gordito: true",
+    "extras": "barba, gafas, gorra (true o un color), vestido, musculoso, gordito: true. También: complexion (delgado, normal, fuerte, gordito), ojos (color), estatura (1 = normal, 1.1 = más alto)",
     "frases": "cada vez que hablas con alguien dice una frase distinta. Si una frase es una lista [\"...\", \"...\"], se muestra en varias páginas seguidas."
   },
   "jugador": {

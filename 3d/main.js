@@ -1,6 +1,6 @@
 // Plaza de Jaraíz de la Vera y Pub Calisay en 3D (Three.js).
 // Aproximación de fantasía: los edificios son de bajo polígono, no una réplica exacta.
-import { color } from '../js/sprites.js';
+import { color, shade } from '../js/sprites.js';
 
 // ---------------------------------------------------------------- carga de Three.js
 const THREE_SOURCES = [
@@ -426,54 +426,106 @@ pois.push({ x: -19, z: -11, r: 3.4, text: 'PALACIO DEL OBISPO MANZANO\nHoy alber
 }
 
 // ---------------------------------------------------------------- personas
+// Personas de formas suaves (cápsulas y elipsoides) con cara, pelo, ropa y complexión.
 function makePerson(a = {}) {
   const root = new THREE.Group(), body = new THREE.Group(); root.add(body);
-  const skin = color(a.piel, '#e3ae80'), hair = color(a.pelo, '#6b4128'), shirt = color(a.camiseta, '#3b68d2'),
-    pants = color(a.pantalon || a['pantalón'], '#44628f'), shoes = color(a.zapatos, '#3a2a22');
-  const fat = !!a.gordito, musc = !!a.musculoso;
-  const tw = fat ? 0.68 : musc ? 0.6 : 0.46, td = fat ? 0.42 : 0.27, th = 0.62;
-  const mkLeg = (x) => {
-    const p = new THREE.Group(); p.position.set(x, 0.78, 0);
-    const lw = fat ? 0.23 : 0.18;
-    box(lw, 0.7, lw + 0.02, pants, 0, -0.35, 0, p); box(lw + 0.02, 0.1, lw + 0.14, shoes, 0, -0.73, 0.05, p); body.add(p); return p;
+  const skin = color(a.piel, '#e3ae80'), hairC = color(a.pelo, '#5a3a24'), shirt = color(a.camiseta, '#3b68d2'),
+    pants = color(a.pantalon || a['pantalón'], '#44628f'), shoes = color(a.zapatos, '#2e2420'), eyeC = color(a.ojos, '#4a3222');
+  const skinShade = shade(skin, -0.1), lipC = shade(skin, -0.3);
+  const fat = !!a.gordito || a.complexion === 'gordito', musc = !!a.musculoso || a.complexion === 'fuerte', thin = a.complexion === 'delgado';
+  const sx = fat ? 1.4 : musc ? 1.22 : thin ? 0.88 : 1, sz = fat ? 1.5 : musc ? 1.12 : thin ? 0.9 : 1;
+  const ls = fat ? 1.25 : musc ? 1.2 : thin ? 0.88 : 1;
+  const as = fat ? 1.2 : musc ? 1.45 : thin ? 0.85 : 1;
+  const fw = fat ? 1.1 : thin ? 0.94 : 1;
+  const dress = !!a.vestido;
+  const M = (geo, col, x = 0, y = 0, z = 0, parent = body, extra) => { const m = shadowed(new THREE.Mesh(geo, lambert(col, extra))); m.position.set(x, y, z); parent.add(m); return m; };
+  const S = (r, col, x, y, z, sc, parent = body, seg = 16) => { const m = M(new THREE.SphereGeometry(r, seg, Math.max(6, seg - 4)), col, x, y, z, parent); if (sc) m.scale.set(sc[0], sc[1], sc[2]); return m; };
+  const C = (r, len, col, x, y, z, parent = body) => M(new THREE.CapsuleGeometry(r, len, 5, 14), col, x, y, z, parent);
+
+  // piernas
+  const mkLeg = (sd) => {
+    const p = new THREE.Group(); p.position.set(sd * 0.085 * sx, 0.86, 0); body.add(p);
+    const lc = dress ? skin : pants;
+    C(0.085 * ls, 0.3, lc, 0, -0.26, 0, p); C(0.068 * ls, 0.3, lc, 0, -0.6, 0, p);
+    S(0.07, shoes, 0, -0.82, 0.045, [1.05, 0.62, 1.75], p);
+    return p;
   };
-  const off = fat ? 0.16 : 0.115;
-  const legL = mkLeg(-off), legR = mkLeg(off);
-  box(tw, th, td, shirt, 0, 0.78 + th / 2, 0, body);
-  if (fat) box(tw + 0.05, 0.32, td + 0.12, shirt, 0, 0.93, 0.05, body);
-  if (a.vestido) box(tw + 0.08, 0.42, td + 0.1, shirt, 0, 0.72, 0, body);
-  const aw = musc ? 0.21 : fat ? 0.17 : 0.13;
-  const mkArm = (s) => {
-    const p = new THREE.Group(); p.position.set(s * (tw / 2 + aw / 2 + 0.01), 0.78 + th - 0.05, 0);
-    box(aw, 0.3, aw, musc ? skin : shirt, 0, -0.15, 0, p); box(aw * 0.9, 0.32, aw * 0.9, skin, 0, -0.46, 0, p); body.add(p); return p;
+  const legL = mkLeg(-1), legR = mkLeg(1);
+  S(0.17, dress ? shirt : pants, 0, 0.88, 0, [1.05 * sx, 0.62, 0.75 * sz]);
+  if (dress) M(new THREE.CylinderGeometry(0.17 * sx, 0.28 * sx, 0.5, 22, 1, true), shirt, 0, 0.72, 0, body, { side: THREE.DoubleSide });
+
+  // torso
+  const torso = C(0.16, 0.3, shirt, 0, 1.14, 0); torso.scale.set(1.12 * sx, 1, 0.7 * sz);
+  if (fat) S(0.2, shirt, 0, 1.0, 0.06, [1.15, 1, 1]);
+  S(0.068 * Math.sqrt(as), musc ? skin : shirt, -0.185 * sx, 1.37, 0, null); S(0.068 * Math.sqrt(as), musc ? skin : shirt, 0.185 * sx, 1.37, 0, null);
+  M(new THREE.CylinderGeometry(0.048, 0.056, 0.12, 14), skin, 0, 1.49, 0);
+
+  // brazos
+  const mkArm = (sd) => {
+    const p = new THREE.Group(); p.position.set(sd * (0.19 * sx + 0.01), 1.37, 0); p.rotation.z = sd * (fat ? 0.1 : 0.05); body.add(p);
+    C(0.05 * as, 0.16, musc ? skin : shirt, 0, -0.14, 0, p); C(0.042 * as, 0.2, skin, 0, -0.37, 0.01, p);
+    S(0.048 * Math.sqrt(as), skin, 0, -0.54, 0.015, [0.9, 1.1, 0.75], p);
+    return p;
   };
   const armL = mkArm(-1), armR = mkArm(1);
-  const head = new THREE.Group(); head.position.y = 0.78 + th + 0.19; body.add(head);
-  box(0.3, 0.32, 0.3, skin, 0, 0, 0, head);
-  box(0.05, 0.055, 0.012, '#1d1520', -0.075, 0.02, 0.152, head); box(0.05, 0.055, 0.012, '#1d1520', 0.075, 0.02, 0.152, head);
-  const style = (a.peinado || 'corto').toLowerCase();
-  if (style !== 'calvo' && style !== 'cresta') {
-    box(0.34, 0.1, 0.34, hair, 0, 0.16, 0, head); box(0.34, 0.24, 0.08, hair, 0, 0.05, -0.14, head);
-    box(0.03, 0.14, 0.26, hair, -0.165, 0.07, -0.02, head); box(0.03, 0.14, 0.26, hair, 0.165, 0.07, -0.02, head);
-    box(0.3, 0.06, 0.04, hair, 0, 0.13, 0.15, head);
+
+  // cabeza
+  const head = new THREE.Group(); head.position.y = 1.62; body.add(head);
+  S(0.13, skin, 0, 0, 0, [0.92 * fw, 1.08, 1.0], head, 22);
+  S(0.062, skin, 0, -0.085, 0.05, [1.0 * fw, 0.85, 0.9], head);
+  for (const sd of [-1, 1]) {
+    S(0.03, skinShade, sd * 0.118 * fw, -0.005, 0, [0.5, 1, 0.8], head, 10);
+    S(0.022, '#f6f2ea', sd * 0.048 * fw, 0.02, 0.112, [1.2, 0.8, 0.5], head, 12);
+    S(0.0125, eyeC, sd * 0.048 * fw, 0.02, 0.121, [1, 1, 0.4], head, 10);
+    S(0.005, '#0d0a0c', sd * 0.048 * fw, 0.02, 0.1245, [1, 1, 0.4], head, 6);
+    const brow = M(new THREE.BoxGeometry(0.052, 0.009, 0.012), shade(hairC, -0.1), sd * 0.048 * fw, 0.056, 0.106, head); brow.rotation.z = sd * -0.12;
   }
-  if (style === 'cresta') box(0.07, 0.18, 0.32, hair, 0, 0.2, 0, head);
-  if (style === 'largo') { box(0.36, 0.5, 0.08, hair, 0, -0.1, -0.15, head); box(0.04, 0.4, 0.2, hair, -0.18, -0.05, -0.02, head); box(0.04, 0.4, 0.2, hair, 0.18, -0.05, -0.02, head); }
-  if (style === 'coleta') box(0.09, 0.34, 0.09, hair, 0, -0.06, -0.22, head);
-  if (style === 'moño' || style === 'mono') ball(0.1, hair, 0, 0.28, -0.02, head, 8);
-  if (style === 'rizado') for (const [x, z] of [[-0.12, 0.1], [0.12, 0.1], [-0.12, -0.1], [0.12, -0.1], [0, 0]]) ball(0.1, hair, x, 0.22, z, head, 7);
-  if (a.barba) { box(0.32, 0.1, 0.06, hair, 0, -0.11, 0.14, head); box(0.32, 0.16, 0.04, hair, 0, -0.05, 0.145, head); }
-  if (a.gafas) { for (const s of [-1, 1]) { box(0.115, 0.085, 0.006, '#1d1520', s * 0.075, 0.025, 0.155, head); box(0.09, 0.06, 0.006, '#cfe8f2', s * 0.075, 0.025, 0.159, head); } box(0.04, 0.014, 0.006, '#1d1520', 0, 0.035, 0.156, head); }
-  if (a.gorra) { const gc = color(a.gorra === true ? 'rojo' : a.gorra, '#d23b3b'); box(0.35, 0.1, 0.35, gc, 0, 0.19, 0, head); box(0.3, 0.025, 0.17, gc, 0, 0.15, 0.22, head); }
-  root.userData = { legL, legR, armL, armR, body, phase: Math.random() * 6 };
+  S(0.022, skinShade, 0, -0.02, 0.127, [0.95, 1.25, 1.1], head, 12);
+  const smile = M(new THREE.TorusGeometry(0.02, 0.004, 6, 14, Math.PI), lipC, 0, -0.048, 0.114, head); smile.rotation.z = Math.PI;
+
+  // pelo
+  const style = (a.peinado || 'corto').toLowerCase();
+  const hairCap = (theta, r = 0.137) => { const m = M(new THREE.SphereGeometry(r, 24, 14, 0, Math.PI * 2, 0, theta), hairC, 0, 0.004, -0.004, head); m.scale.set(0.93 * fw, 1.1, 1.03); m.rotation.x = -0.4; return m; };
+  if (a.gorra) {
+    const gc = color(a.gorra === true ? 'rojo' : a.gorra, '#d23b3b');
+    const g = M(new THREE.SphereGeometry(0.142, 24, 14, 0, Math.PI * 2, 0, 1.42), gc, 0, 0.008, -0.004, head); g.scale.set(0.93 * fw, 1.1, 1.03); g.rotation.x = -0.12;
+    M(new THREE.CylinderGeometry(0.1, 0.1, 0.012, 20, 1, false, -Math.PI / 2, Math.PI), gc, 0, 0.05, 0.11, head);
+    S(0.13, hairC, 0, -0.02, -0.03, [0.85 * fw, 0.6, 0.8], head, 12);
+  } else if (style === 'largo') {
+    hairCap(1.85); C(0.1, 0.2, hairC, 0, -0.1, -0.075, head).scale.set(1.15 * fw, 1, 0.7);
+    for (const sd of [-1, 1]) C(0.03, 0.12, hairC, sd * 0.118 * fw, -0.06, -0.01, head);
+  } else if (style === 'coleta') { hairCap(1.75); const t = C(0.03, 0.14, hairC, 0, -0.09, -0.15, head); t.rotation.x = -0.4; }
+  else if (style === 'moño' || style === 'mono') { hairCap(1.75); S(0.06, hairC, 0, 0.15, -0.07, null, head); }
+  else if (style === 'rizado') { hairCap(1.9); for (let i = 0; i < 10; i++) { const an = i / 10 * Math.PI * 2; S(0.048, hairC, Math.cos(an) * 0.095 * fw, 0.115 + Math.sin(i * 2.3) * 0.015, Math.sin(an) * 0.1, null, head, 8); } }
+  else if (style === 'cresta') { hairCap(0.9); M(new THREE.BoxGeometry(0.035, 0.09, 0.22), hairC, 0, 0.15, -0.01, head); }
+  else if (style === 'entradas') { const r = M(new THREE.SphereGeometry(0.135, 22, 8, Math.PI, Math.PI, 1.35, 0.6), hairC, 0, 0, 0, head); r.scale.set(0.93 * fw, 1.1, 1.03); }
+  else if (style !== 'calvo') hairCap(1.62);
+
+  // extras de la cara
+  if (a.barba) {
+    const bd = M(new THREE.SphereGeometry(0.137, 22, 10, -0.35, Math.PI + 0.7, 2.1, 0.7), hairC, 0, 0, 0, head); bd.scale.set(0.93 * fw, 1.08, 1.02);
+    M(new THREE.BoxGeometry(0.06, 0.012, 0.014), hairC, 0, -0.038, 0.118, head);
+  }
+  if (a.gafas) {
+    for (const sd of [-1, 1]) {
+      M(new THREE.TorusGeometry(0.031, 0.0045, 8, 22), '#1d1520', sd * 0.048 * fw, 0.022, 0.136, head);
+      const lens = new THREE.Mesh(new THREE.CircleGeometry(0.03, 18), new THREE.MeshBasicMaterial({ color: 0xbfe3f2, transparent: true, opacity: 0.25 }));
+      lens.position.set(sd * 0.048 * fw, 0.022, 0.136); head.add(lens);
+      M(new THREE.BoxGeometry(0.004, 0.004, 0.11), '#1d1520', sd * 0.108 * fw, 0.022, 0.078, head);
+    }
+    M(new THREE.BoxGeometry(0.02, 0.005, 0.005), '#1d1520', 0, 0.026, 0.137, head);
+  }
+  if (a.estatura) root.scale.setScalar(a.estatura);
+  root.userData = { legL, legR, armL, armR, body, head, phase: Math.random() * 6 };
   return root;
 }
 function animatePerson(p, moving, dt, speedMul = 1) {
   const u = p.userData;
   u.phase += dt * (moving ? 9 * speedMul : 0);
-  const s = moving ? Math.sin(u.phase) * 0.7 : Math.sin(performance.now() / 900 + u.phase) * 0.03;
+  const s = moving ? Math.sin(u.phase) * 0.7 : Math.sin(performance.now() / 900 + u.phase) * 0.02;
   u.legL.rotation.x = s; u.legR.rotation.x = -s; u.armL.rotation.x = -s * 0.8; u.armR.rotation.x = s * 0.8;
-  u.body.position.y = moving ? Math.abs(Math.sin(u.phase)) * 0.05 : 0;
+  u.body.position.y = moving ? Math.abs(Math.sin(u.phase)) * 0.04 : Math.sin(performance.now() / 1300 + u.phase) * 0.004;
+  u.head.rotation.y = moving ? 0 : Math.sin(performance.now() / 2500 + u.phase) * 0.12;
 }
 
 // ---------------------------------------------------------------- datos y estado
@@ -726,4 +778,4 @@ const start = () => {
 };
 title.addEventListener('pointerdown', start); addEventListener('keydown', start, { once: true });
 $('title-start').textContent = 'Toca para empezar';
-window.__jaraiz3d = { player, npcs, THREE, scene, camera, applyLocation, cam: (y, p, d) => { camYaw = y; if (p !== undefined) camPitch = p; if (d !== undefined) camDist = d; } };   // solo para pruebas
+window.__jaraiz3d = { makePerson, world, player, npcs, THREE, scene, camera, applyLocation, cam: (y, p, d) => { camYaw = y; if (p !== undefined) camPitch = p; if (d !== undefined) camDist = d; } };   // solo para pruebas
