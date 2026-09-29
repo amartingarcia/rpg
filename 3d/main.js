@@ -237,11 +237,11 @@ function house(o) {
       box(0.6, 0.18, 0.6, '#b9ae95', cx, lh - 0.09, d / 2 + 2.35, G);
       world.userData.pending.push({ list: colExt, g: G, cx, cz: d / 2 + 2.35 });
     }
-    G.add(Object.assign(hipRoof(w, ud, 2.4, o.roof || '#b5533a'), { position: new THREE.Vector3(0, h + 1.2, 1.3) }));
+    const rf = hipRoof(w, ud, 2.4, o.roof || '#b5533a'); rf.position.set(0, h + 1.2, 1.3); G.add(rf);
   } else {
     const mats = [side, side, side, side, new THREE.MeshLambertMaterial({ map: facadeTex(w, h, { base: o.base, stone: o.stone, floors: o.floors || 3, cols: o.cols || Math.max(2, Math.round(w / 2.6)), ground: o.ground || 'door', shutters: !o.stone, clock: o.clock, seed: o.seed, balcony: o.balcony }) }), side];
     box(w, h, d, mats, 0, h / 2, 0, G);
-    G.add(Object.assign(hipRoof(w, d, o.roofH || 2.6, o.roof || '#b5533a'), { position: new THREE.Vector3(0, h + (o.roofH || 2.6) / 2, 0) }));
+    const rf = hipRoof(w, d, o.roofH || 2.6, o.roof || '#b5533a'); rf.position.set(0, h + (o.roofH || 2.6) / 2, 0); G.add(rf);
   }
   const rr = rngFrom(o.seed || 3);
   box(0.6, 1.6, 0.6, '#a89b80', (rr() - 0.5) * w * 0.5, h + 1.6, -d * 0.2, G);
@@ -277,7 +277,7 @@ placeHouse({ w: 9, d: 8, h: 9.5, base: '#efe8d8', arcade: true, seed: 63 }, 24, 
 // Ayuntamiento (nivel alto, al norte)
 const ayto = placeHouse({ w: 18, d: 8, h: 11.5, base: '#e3d7bb', stone: true, ground: 'arches', floors: 3, cols: 7, clock: true, roof: '#a4553a', roofH: 3, seed: 71, balcony: true }, 0, -20, 0);
 box(3.2, 4, 3.2, '#d8ccb0', 0, 11.5 + 3.4, 0, ayto);                 // torre del reloj
-ayto.add(Object.assign(hipRoof(3.2, 3.2, 2.6, '#8f4a35'), { position: new THREE.Vector3(0, 11.5 + 5.4 + 1.3, 0) }));
+const towerRoof = hipRoof(3.2, 3.2, 2.6, '#8f4a35'); towerRoof.position.set(0, 11.5 + 5.4 + 1.3, 0); ayto.add(towerRoof);
 placeHouse({ w: 11, d: 8, h: 9.5, base: '#f3ede0', ground: 'shop', seed: 81 }, -14.5, -20, 0);
 placeHouse({ w: 11, d: 8, h: 9.5, base: '#efe3c8', ground: 'door', seed: 82 }, 14.5, -20, 0);
 // calle hacia el sur
