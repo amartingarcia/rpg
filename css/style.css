@@ -1,0 +1,78 @@
+:root {
+  --body: #231a2b;
+  --body-2: #2f2439;
+  --ink: #1d1520;
+  --paper: #fbf7ee;
+  --accent: #d23b3b;
+  --accent-2: #a82c2c;
+  --pad: #16111b;
+  --font: 'Pixelify Sans', ui-monospace, monospace;
+}
+* { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+html, body { margin: 0; height: 100%; background: var(--body); overflow: hidden; overscroll-behavior: none; }
+body { font-family: var(--font); color: var(--paper); touch-action: none; user-select: none; -webkit-user-select: none; -webkit-touch-callout: none; }
+
+#app { position: fixed; inset: 0; display: flex; flex-direction: column; padding: env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left); }
+#screen { position: relative; flex: 1; min-height: 0; overflow: hidden; background: #141018; }
+#game { display: block; image-rendering: pixelated; image-rendering: crisp-edges; }
+
+/* ---------- mandos (vertical: debajo de la pantalla, estilo consola) ---------- */
+#pad { flex: 0 0 auto; height: min(38vh, 250px); display: flex; align-items: center; justify-content: space-between; padding: 0 max(22px, 6vw); background: linear-gradient(var(--body-2), var(--body)); border-top: 3px solid #120d16; }
+#dpad { position: relative; width: 150px; height: 150px; touch-action: none; }
+#dpad .arm, #dpad .hub { position: absolute; background: var(--pad); box-shadow: 0 4px 0 #07050a; }
+#dpad .up, #dpad .down { left: 50px; width: 50px; height: 52px; }
+#dpad .left, #dpad .right { top: 50px; width: 52px; height: 50px; }
+#dpad .up { top: 0; border-radius: 8px 8px 0 0; } #dpad .down { bottom: 0; border-radius: 0 0 8px 8px; }
+#dpad .left { left: 0; border-radius: 8px 0 0 8px; } #dpad .right { right: 0; border-radius: 0 8px 8px 0; }
+#dpad .hub { left: 48px; top: 48px; width: 54px; height: 54px; box-shadow: none; }
+#dpad .arm::after { content: ''; position: absolute; left: 50%; top: 50%; width: 0; height: 0; border: 8px solid transparent; transform: translate(-50%, -50%); }
+#dpad .up::after { border-bottom-color: #4a3f55; margin-top: -4px; } #dpad .down::after { border-top-color: #4a3f55; margin-top: 4px; }
+#dpad .left::after { border-right-color: #4a3f55; margin-left: -4px; } #dpad .right::after { border-left-color: #4a3f55; margin-left: 4px; }
+#dpad[data-dir="up"] .up, #dpad[data-dir="down"] .down, #dpad[data-dir="left"] .left, #dpad[data-dir="right"] .right { background: #3a2f45; transform: translateY(2px); box-shadow: 0 2px 0 #07050a; }
+
+#ab { display: flex; gap: 18px; align-items: center; transform: rotate(-18deg); }
+#ab button { width: 70px; height: 70px; border-radius: 50%; border: 0; background: var(--accent); color: #ffe3dc; font: 600 26px var(--font); box-shadow: 0 5px 0 var(--accent-2), 0 7px 10px rgba(0,0,0,.4); touch-action: none; cursor: pointer; }
+#btnB { margin-top: 44px; }
+#ab button.on { transform: translateY(3px); box-shadow: 0 2px 0 var(--accent-2); background: #e2504a; }
+
+/* ---------- horizontal: los mandos flotan sobre la pantalla ---------- */
+@media (orientation: landscape) {
+  #pad { position: absolute; inset: auto 0 0 0; height: 100%; background: none; border: 0; pointer-events: none; align-items: flex-end; padding: 0 max(24px, env(safe-area-inset-right)) 24px max(24px, env(safe-area-inset-left)); }
+  #dpad, #ab { pointer-events: auto; opacity: .72; }
+  #dpad { width: 130px; height: 130px; }
+  #dpad .up, #dpad .down { left: 43px; width: 44px; height: 45px; }
+  #dpad .left, #dpad .right { top: 43px; width: 45px; height: 44px; }
+  #dpad .hub { left: 42px; top: 42px; width: 46px; height: 46px; }
+  #ab button { width: 60px; height: 60px; font-size: 22px; }
+}
+@media (orientation: landscape) { #dialog { left: 210px; right: 210px; } }
+/* ordenador con teclado: sin mandos */
+@media (pointer: fine) and (orientation: landscape) { #pad { display: none; } #dialog { left: 10px; right: 10px; } }
+
+/* ---------- cuadro de diálogo ---------- */
+#dialog { position: absolute; left: 10px; right: 10px; bottom: 10px; min-height: 92px; max-width: 720px; margin: 0 auto; background: var(--paper); color: var(--ink); border: 4px solid var(--ink); border-radius: 10px; box-shadow: inset 0 0 0 3px #d8cbb0, 0 4px 0 rgba(0,0,0,.35); padding: 16px 18px 14px; font-size: 19px; line-height: 1.3; }
+#dialog[hidden] { display: none; }
+#dialog-name { position: absolute; top: -16px; left: 14px; background: var(--accent); color: #fff; border: 3px solid var(--ink); border-radius: 6px; padding: 1px 10px; font-size: 15px; font-weight: 600; }
+#dialog-text { white-space: pre-wrap; min-height: 50px; }
+#dialog-arrow { position: absolute; right: 14px; bottom: 6px; font-size: 14px; color: var(--accent); opacity: 0; }
+#dialog.done #dialog-arrow { opacity: 1; animation: bob .6s steps(2) infinite; }
+@keyframes bob { 50% { transform: translateY(3px); } }
+
+/* ---------- cartel con el nombre del sitio ---------- */
+#banner { position: absolute; top: 10px; left: 10px; background: var(--paper); color: var(--ink); border: 3px solid var(--ink); border-radius: 6px; padding: 6px 12px; font-size: 16px; font-weight: 600; transform: translateY(-80px); pointer-events: none; }
+#banner.show { animation: banner 2.6s ease both; }
+@keyframes banner { 0% { transform: translateY(-80px); } 12%, 82% { transform: translateY(0); } 100% { transform: translateY(-80px); } }
+
+#fade { position: absolute; inset: 0; background: #000; opacity: 0; pointer-events: none; }
+
+/* ---------- portada ---------- */
+#title { position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 22px; background: radial-gradient(circle at 50% 40%, #3b2a47, #17111c 70%); text-align: center; padding: 20px; z-index: 5; transition: opacity .5s; cursor: pointer; }
+#title.hide { opacity: 0; pointer-events: none; }
+.title-box { border: 4px solid var(--paper); border-radius: 12px; padding: 16px 26px 12px; box-shadow: 0 0 0 4px var(--accent), 0 8px 0 4px #0b080e; background: #2a1f33; }
+.title-small { font-size: 16px; letter-spacing: 2px; color: #f0c93a; }
+#title h1 { margin: 6px 0 4px; font-size: clamp(30px, 9vw, 46px); line-height: 1; letter-spacing: 2px; text-shadow: 3px 3px 0 var(--accent); }
+.title-pepper { font-size: 26px; }
+#title-start { font-size: 20px; }
+.title-help { font-size: 13px; opacity: .6; max-width: 280px; }
+.blink { animation: blink 1.1s steps(2) infinite; }
+@keyframes blink { 50% { opacity: 0; } }

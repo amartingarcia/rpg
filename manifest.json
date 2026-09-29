@@ -1,0 +1,13 @@
+{
+  "name": "Jaraíz RPG",
+  "short_name": "Jaraíz RPG",
+  "start_url": "./",
+  "display": "fullscreen",
+  "orientation": "portrait",
+  "background_color": "#231a2b",
+  "theme_color": "#231a2b",
+  "icons": [
+    { "src": "icon.png", "sizes": "512x512", "type": "image/png" },
+    { "src": "icon.svg", "sizes": "any", "type": "image/svg+xml" }
+  ]
+}
