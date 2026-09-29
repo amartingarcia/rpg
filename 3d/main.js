@@ -93,7 +93,7 @@ const pois = [];                                             // carteles y cosas
     g.fillStyle = '#dcd6ca'; g.fillRect(0, 0, w, h);
     const r = rngFrom(4);
     for (let y = 0; y < h; y += 16) for (let x = (y / 16) % 2 ? 0 : 10; x < w + 20; x += 20) {
-      g.fillStyle = `rgb(${205 + r() * 30 | 0},${198 + r() * 28 | 0},${185 + r() * 26 | 0})`;
+      const v = r(); g.fillStyle = `rgb(${196 + v * 34 | 0},${190 + v * 32 | 0},${178 + v * 28 | 0})`;
       g.fillRect(x + 1, y + 1, 17, 13);
       g.strokeStyle = 'rgba(120,110,95,.35)'; g.strokeRect(x + 1, y + 1, 17, 13);
     }
@@ -332,12 +332,12 @@ const PUB_Z = 6;
 // ---------------------------------------------------------------- mobiliario de la plaza
 function tree(x, z) {
   const y = groundH(x, z), t = new THREE.Group(); t.position.set(x, y, z);
-  cyl(0.28, 0.4, 3.6, '#6b4428', 0, 1.8, 0, t, 7);
+  cyl(0.28, 0.4, 4.6, '#6b4428', 0, 2.3, 0, t, 7);
   const r = rngFrom(Math.round(x * 13 + z * 7));
-  for (let i = 0; i < 4; i++) ball(1.5 + r() * 0.6, i % 2 ? '#3f8a45' : '#4fa055', (r() - 0.5) * 1.8, 4.3 + r() * 1.3, (r() - 0.5) * 1.8, t, 8);
+  for (let i = 0; i < 4; i++) ball(1.4 + r() * 0.5, i % 2 ? '#3f8a45' : '#4fa055', (r() - 0.5) * 1.8, 5.3 + r() * 1.1, (r() - 0.5) * 1.8, t, 8);
   world.add(t); circle(colExt, x, z, 0.5);
 }
-[[-10, 9], [-10, -1], [10, -3], [10, 11], [-9, -12], [9, -12], [-2, 14], [2, 14]].forEach(([x, z]) => tree(x, z));
+[[-16, 10.5], [-16, 1], [15.5, 13], [15.5, -4.5], [-16, -12.5], [16, -13]].forEach(([x, z]) => tree(x, z));
 
 function lamp(x, z) {
   const y = groundH(x, z), g = new THREE.Group(); g.position.set(x, y, z);
@@ -421,8 +421,8 @@ pois.push({ x: -19, z: -11, r: 3.4, text: 'PALACIO DEL OBISPO MANZANO\nHoy alber
   box(1.4, 2.4, 0.08, '#3b2616', 0, 1.2, H / 2 - 0.05, interior); box(1.0, 1.9, 0.02, '#f2b05a', 0, 1.25, H / 2 - 0.1, interior).material = new THREE.MeshBasicMaterial({ color: 0xf2b05a });
   box(0.6, 0.2, 0.02, '#3f9a4a', 0, 2.6, H / 2 - 0.08, interior).material = new THREE.MeshBasicMaterial({ color: 0x3f9a4a });
   // luces
-  for (const x of [-3.5, 3.5]) { const l = new THREE.PointLight(0xffc98a, 38, 16, 1.6); l.position.set(x, 3.1, 0.5); interior.add(l); box(0.4, 0.3, 0.4, '#f5de8a', x, 3.3, 0.5, interior).material = new THREE.MeshBasicMaterial({ color: 0xf5de8a }); }
-  const l3 = new THREE.PointLight(0xff9ac8, 12, 9, 1.6); l3.position.set(0, 2.6, -3.6); interior.add(l3);
+  for (const x of [-3.5, 3.5]) { const l = new THREE.PointLight(0xffc98a, 14, 14, 1.6); l.position.set(x, 3.1, 0.5); interior.add(l); box(0.4, 0.3, 0.4, '#f5de8a', x, 3.3, 0.5, interior).material = new THREE.MeshBasicMaterial({ color: 0xf5de8a }); }
+  const l3 = new THREE.PointLight(0xff9ac8, 6, 9, 1.6); l3.position.set(0, 2.6, -3.6); interior.add(l3);
 }
 
 // ---------------------------------------------------------------- personas
@@ -480,7 +480,7 @@ function animatePerson(p, moving, dt, speedMul = 1) {
 const data = await fetch('../data/personajes.json', { cache: 'no-cache' }).then((r) => r.json());
 let inside = false;
 const H = (x, z) => (inside ? 0 : groundH(x, z));
-const player = { x: 0, z: 12, yaw: Math.PI, moving: false, mesh: null };
+const player = { x: 0, z: 10.5, yaw: Math.PI, moving: false, mesh: null };
 player.mesh = makePerson(data.jugador.apariencia); scene.add(player.mesh);
 player.mesh.userData.isPlayer = true;
 const npcs = [];
@@ -546,12 +546,12 @@ function stickMove(e) {
   knob.style.transform = `translate(${dx}px,${dy}px)`;
   stickV = Math.hypot(dx, dy) < R * 0.12 ? { x: 0, y: 0 } : { x: dx / (R * 0.7), y: dy / (R * 0.7) };
 }
-stick.addEventListener('pointerdown', (e) => { stickId = e.pointerId; stick.setPointerCapture(e.pointerId); stickMove(e); e.preventDefault(); });
+stick.addEventListener('pointerdown', (e) => { stickId = e.pointerId; try { stick.setPointerCapture(e.pointerId); } catch (_) { /* nada */ } stickMove(e); e.preventDefault(); });
 stick.addEventListener('pointermove', (e) => { if (e.pointerId === stickId) stickMove(e); });
 const stickEnd = (e) => { if (e.pointerId === stickId) { stickId = null; stickV = { x: 0, y: 0 }; knob.style.transform = ''; } };
 stick.addEventListener('pointerup', stickEnd); stick.addEventListener('pointercancel', stickEnd);
 function bindBtn(el, down, up) {
-  el.addEventListener('pointerdown', (e) => { el.classList.add('on'); el.setPointerCapture(e.pointerId); down(); e.preventDefault(); });
+  el.addEventListener('pointerdown', (e) => { el.classList.add('on'); try { el.setPointerCapture(e.pointerId); } catch (_) { /* nada */ } down(); e.preventDefault(); });
   const end = () => { el.classList.remove('on'); up && up(); };
   el.addEventListener('pointerup', end); el.addEventListener('pointercancel', end);
 }
@@ -560,7 +560,7 @@ bindBtn($('btnB'), () => { input.run = true; }, () => { input.run = false; });
 document.addEventListener('contextmenu', (e) => e.preventDefault());
 
 // cámara: arrastrar para girar
-let camYaw = 0, camPitch = 0.38, camDist = 7.2;
+let camYaw = 0, camPitch = 0.45, camDist = 7.2;
 let dragId = null, lastX = 0, lastY = 0;
 stage.addEventListener('pointerdown', (e) => { if (e.target !== renderer.domElement) return; dragId = e.pointerId; lastX = e.clientX; lastY = e.clientY; });
 addEventListener('pointermove', (e) => {
@@ -618,12 +618,13 @@ function talkTo(n) {
 let transition = null;
 function goInside(v) { transition = { phase: 'out', t: 0, v }; }
 function applyLocation(v) {
+  needRelease = true;
   inside = v; player.inside = v;
   world.visible = !v; interior.visible = v; sun.visible = !v;
-  hemi.intensity = v ? 2.6 : 2.0; hemi.color.set(v ? 0xffe6c8 : 0xdcecff); hemi.groundColor.set(v ? 0x5a4030 : 0x9a8a6a);
+  hemi.intensity = v ? 1.35 : 2.0; hemi.color.set(v ? 0xffe6c8 : 0xdcecff); hemi.groundColor.set(v ? 0x5a4030 : 0x9a8a6a);
   scene.fog = v ? null : new THREE.Fog(FOG, 60, 190); scene.background = v ? new THREE.Color(0x1a1218) : SKY;
-  if (v) { player.x = IX; player.z = 3.7; player.yaw = Math.PI; camYaw = 0; camDist = 5.6; banner('Pub Calisay'); }
-  else { player.x = 18.2; player.z = PUB_Z; player.yaw = -Math.PI / 2; camYaw = Math.PI / 2; camDist = 7.2; banner('Plaza de Jaraíz'); }
+  if (v) { player.x = IX; player.z = 3.7; player.yaw = Math.PI; camYaw = 0; camDist = 6; camPitch = 0.75; banner('Pub Calisay'); }
+  else { player.x = 18.2; player.z = PUB_Z; player.yaw = -Math.PI / 2; camYaw = Math.PI / 2; camDist = 7.2; camPitch = 0.45; banner('Plaza de Jaraíz'); }
   for (const n of npcs) if (n.inBar) n.mesh.visible = v;
 }
 function updateTransition(dt) {
@@ -634,6 +635,7 @@ function updateTransition(dt) {
 
 // ---------------------------------------------------------------- actualización
 let time = 0;
+let needRelease = false;      // tras cruzar una puerta, no se vuelve a activar hasta soltar el mando
 function update(dt) {
   time += dt;
   if (transition) updateTransition(dt);
@@ -644,6 +646,7 @@ function update(dt) {
     if (keys['a'] || keys['arrowleft']) jx -= 1; if (keys['d'] || keys['arrowright']) jx += 1;
     if (keys['w'] || keys['arrowup']) jy -= 1; if (keys['s'] || keys['arrowdown']) jy += 1;
     const len = Math.hypot(jx, jy); if (len > 1) { jx /= len; jy /= len; }
+    if (len < 0.05) needRelease = false;
     // adelante = -(sinY, cosY) ; derecha = (cosY, -sinY) ; el joystick hacia arriba es jy < 0
     const sy = Math.sin(camYaw), cy = Math.cos(camYaw);
     const dx = -sy * -jy + cy * jx, dz = -cy * -jy + -sy * jx;
@@ -656,8 +659,8 @@ function update(dt) {
       collide(player, 0.4, inside, player);
     }
     // entrar / salir del pub
-    if (!inside && Math.hypot(player.x - 19.5, player.z - PUB_Z) < 0.9 && player.moving) goInside(true);
-    if (inside && player.z > 4.35 && Math.abs(player.x - IX) < 1.1 && player.moving) goInside(false);
+    if (!needRelease && !inside && Math.hypot(player.x - 19.5, player.z - PUB_Z) < 0.9 && player.moving) goInside(true);
+    if (!needRelease && inside && player.z > 4.35 && Math.abs(player.x - IX) < 1.1 && player.moving) goInside(false);
     // interactuar
     const tgt = nearestTarget();
     promptEl.hidden = !tgt;
@@ -723,4 +726,4 @@ const start = () => {
 };
 title.addEventListener('pointerdown', start); addEventListener('keydown', start, { once: true });
 $('title-start').textContent = 'Toca para empezar';
-window.__jaraiz3d = { player, npcs, THREE, scene, camera, applyLocation };   // solo para pruebas
+window.__jaraiz3d = { player, npcs, THREE, scene, camera, applyLocation, cam: (y, p, d) => { camYaw = y; if (p !== undefined) camPitch = p; if (d !== undefined) camDist = d; } };   // solo para pruebas
