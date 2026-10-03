@@ -167,6 +167,11 @@
           "Lo mío es que cada móvil tenga su carcasa.",
           "Y que salga desde Jaraíz."
         ],
+        [
+          "Mi novia, la Koplovich, dice que trabajo demasiado.",
+          "Yo digo que tengo que vender fundas y encanto. Todo a la vez."
+        ],
+        "Ligar es como vender carcasas: hay que ofrecer el modelo adecuado en el momento justo.",
         "Hoy han llegado colores nuevos. Echa un ojo."
       ]
     },
@@ -182,18 +187,25 @@
         "piel": "media",
         "pelo": "negro",
         "peinado": "corto",
-        "camiseta": "negro",
-        "pantalon": "gris",
+        "camiseta": "azul",
+        "pantalon": "negro",
+        "zapatos": "negro",
+        "gorra": "azul",
         "musculoso": true
       },
       "frases": [
-        "¿Entrenas? Hoy toca pierna. Bueno, hoy siempre toca pierna.",
-        "Mira este bíceps. Vamos, tócalo.",
+        "Alto. Policía del amor. ¿Has dado hoy un abrazo?",
+        "Mira este bíceps. Vamos, tócalo. Con cariño, eh.",
+        [
+          "Aquí nadie se queda sin cariño.",
+          "Es la ley. La mía, pero es ley."
+        ],
+        "¿Alguien te ha roto el corazón? Dime quién y le doy un sermón muy serio.",
         [
           "Cinco series de doce.",
           "Y luego una tapa, que hay que recuperarse."
         ],
-        "El agua del lago viene fresquita: ideal para enfriar los músculos."
+        "Soy fuerte, pero lo uso solo para el bien. Y para abrir botes."
       ]
     },
     {
@@ -215,12 +227,72 @@
       },
       "frases": [
         "Shhh, que va a empezar la peli.",
+        "El cine es vida. Lo demás son tráilers.",
         "¿Palomitas? Yo ya voy por el segundo cubo.",
         [
           "¿Has visto los tráilers?",
           "Yo me los veo todos, hasta los de las pelis que no voy a ver."
         ],
-        "La mejor butaca es la del medio, fila siete."
+        "La mejor butaca es la del medio, fila siete. Es ciencia.",
+        "Pregúntame de cualquier peli. De cualquiera. Crack, me dicen."
+      ]
+    },
+    {
+      "id": "parada",
+      "nombre": "Parada",
+      "mapa": "pueblo",
+      "x": 26,
+      "y": 16,
+      "mira": "left",
+      "pasea": true,
+      "apariencia": {
+        "piel": "media",
+        "pelo": "negro",
+        "peinado": "corto",
+        "camiseta": "morado",
+        "pantalon": "negro",
+        "zapatos": "blanco",
+        "ojos": "#2a1a10",
+        "estatura": 1.05
+      },
+      "frases": [
+        "¡¿QUÉ PASA?! ¿Qué hacemos hoy? Dime que hay fiesta, porfa.",
+        "¡Esta noche se sale! Y mañana también. Y pasado ya vemos.",
+        [
+          "Yo no me tomo las cosas a medias.",
+          "O todo, o nada. Y casi siempre es todo."
+        ],
+        "¡¡Tú, venga, una ronda!! ¡Que invita la casa! (La casa eres tú.)",
+        "A ver, que no es que sea intenso. Es que lo siento MUCHO."
+      ]
+    },
+    {
+      "id": "josean",
+      "nombre": "Josean",
+      "mapa": "pueblo",
+      "x": 12,
+      "y": 16,
+      "mira": "right",
+      "pasea": true,
+      "apariencia": {
+        "piel": "clara",
+        "pelo": "castaño",
+        "peinado": "rizado",
+        "camiseta": "rojo",
+        "pantalon": "azul",
+        "zapatos": "verde",
+        "estatura": 0.85
+      },
+      "frases": [
+        "¡QUE NO! ¡QUE ES MÍO!",
+        "Me aburro. ¿Jugamos? Pero yo gano.",
+        [
+          "¡Como no me des eso... te pego!",
+          "...un poquito. Un poquito solo."
+        ],
+        "¡Ya no estoy enfadado! ...Bueno, un poco sí.",
+        "¿Y por qué? ¿Y por qué? ¿Y por qué?",
+        "Hmpf. No me hables. Bueno sí, háblame."
       ]
     }
   ]
