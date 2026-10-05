@@ -451,7 +451,8 @@ function makePerson(a = {}) {
   const fat = !!a.gordito || a.complexion === 'gordito', musc = !!a.musculoso || a.complexion === 'fuerte', thin = a.complexion === 'delgado';
   const sx = fat ? 1.55 : musc ? 1.35 : thin ? 0.85 : 1, sz = fat ? 1.6 : musc ? 1.15 : thin ? 0.9 : 1;
   const as = fat ? 1.3 : musc ? 1.9 : thin ? 0.85 : 1;
-  const fw = fat ? 1.1 : thin ? 0.94 : 1;
+  const cara = a.cara || 'normal', fw = (fat ? 1.1 : thin ? 0.94 : 1) * (cara === 'ancha' || cara === 'redonda' ? 1.1 : cara === 'estrecha' ? 0.9 : 1);
+  const longSleeve = a.mangas === 'largas';
   const dress = !!a.vestido;
 
   // pieza con contorno opcional (casco invertido)
@@ -483,8 +484,8 @@ function makePerson(a = {}) {
   // brazos y manos grandes
   const mkArm = (sd) => {
     const p = new THREE.Group(); p.position.set(sd * (0.15 * 1.15 * sx + 0.02), 1.09, 0); p.rotation.z = sd * (fat ? 0.14 : 0.06); body.add(p);
-    C(0.034 * as, 0.3, musc ? skin : skin, 0, -0.19, 0, p, 0.14);
-    if (!musc) C(0.048, 0.06, shirt, 0, -0.06, 0, p, 0.1);
+    C(longSleeve ? 0.04 * as : 0.034 * as, 0.3, longSleeve ? shirt : skin, 0, -0.19, 0, p, 0.14);
+    if (!musc && !longSleeve) C(0.048, 0.06, shirt, 0, -0.06, 0, p, 0.1);
     S(0.05 * Math.sqrt(as), skin, 0, -0.42, 0.01, [1, 1.1, 0.85], p, 0.12);
     return p;
   };
@@ -496,10 +497,24 @@ function makePerson(a = {}) {
   for (const sd of [-1, 1]) {
     S(0.04, skin, sd * 0.215 * fw, -0.01, 0, [0.5, 1, 0.8], head, 0.14);
     S(0.07, '#ffffff', sd * 0.085 * fw, 0.04, 0.185, [1, 1.05, 0.5], head, 0.08, { basic: true });
-    S(0.015, '#120c0a', sd * 0.075 * fw, 0.04, 0.215, [1, 1, 0.4], head, 0, { basic: true });
+    S(0.024, color(a.ojos, '#120c0a'), sd * 0.075 * fw, 0.04, 0.213, [1, 1, 0.4], head, 0, { basic: true });
+    S(0.011, '#0a0605', sd * 0.075 * fw, 0.04, 0.222, [1, 1, 0.3], head, 0, { basic: true });
   }
-  S(0.052, skinShade, 0, -0.045, 0.205, [1, 1.15, 1.1], head, 0.09);
-  const smile = P(new THREE.TorusGeometry(0.06, 0.009, 6, 16, Math.PI), '#2a1512', 0, -0.075, 0.186, head, 0, { basic: true }); smile.rotation.z = Math.PI;
+  const ns = a.nariz === 'grande' ? 1.35 : a.nariz === 'pequeña' || a.nariz === 'pequena' ? 0.75 : 1;
+  S(0.052 * ns, skinShade, 0, -0.045, 0.205, [1, 1.15, 1.1], head, 0.09);
+  // cejas
+  const bw = a.cejas === 'gruesas' ? 0.02 : a.cejas === 'finas' ? 0.008 : 0.013, bcol = color(a.cejas_color, a.pelo ? a.pelo : '#3a2a20');
+  const bAng = a.ceja === 'fruncida' ? 0.45 : a.ceja === 'arqueada' ? -0.25 : 0.1;
+  for (const sd of [-1, 1]) { const b = P(new THREE.CapsuleGeometry(bw, 0.07, 3, 8), shade(bcol, -0.35), sd * 0.085 * fw, 0.125, 0.2, head, 0, { basic: true }); b.rotation.z = Math.PI / 2 + sd * bAng; b.rotation.x = -0.2; }
+  // boca
+  const sonrisa = a.sonrisa || 'normal';
+  if (sonrisa === 'seria') { const m = C(0.008, 0.07, '#2a1512', 0, -0.078, 0.188, head, 0); m.rotation.z = Math.PI / 2; }
+  else {
+    const big = sonrisa === 'amplia' || sonrisa === 'ladeada';
+    if (big) { const t = P(new THREE.CapsuleGeometry(0.012, 0.09, 3, 8), '#fbfaf5', 0, -0.07, 0.188, head, 0, { basic: true }); t.rotation.z = Math.PI / 2; }
+    const smile = P(new THREE.TorusGeometry(big ? 0.075 : 0.06, 0.009, 6, 16, Math.PI), '#2a1512', 0, big ? -0.065 : -0.075, 0.186, head, 0, { basic: true });
+    smile.rotation.z = Math.PI + (sonrisa === 'ladeada' ? 0.18 : 0);
+  }
 
   // pelo
   const style = (a.peinado || 'corto').toLowerCase();
@@ -512,6 +527,10 @@ function makePerson(a = {}) {
     cap(1.4, gc, 0.235, -0.15, 0.06);
     P(new THREE.CylinderGeometry(0.15, 0.15, 0.02, 22, 1, false, -Math.PI / 2, Math.PI), gc, 0, 0.09, 0.15, head, 0.25);
     S(0.2, hairC, 0, -0.04, -0.05, [0.9 * fw, 0.55, 0.8], head, 0);
+  } else if (style === 'tupe') {
+    cap(1.72);
+    S(0.13, hairC, 0, 0.165, 0.075, [1.45 * fw, 0.55, 1.2], head, 0.06);
+    S(0.09, hairC, -0.1 * fw, 0.19, 0.0, [1, 0.7, 1.1], head, 0.07); S(0.09, hairC, 0.1 * fw, 0.19, 0.0, [1, 0.7, 1.1], head, 0.07);
   } else if (style === 'largo') {
     cap(1.8); const bk = C(0.15, 0.3, hairC, 0, -0.16, -0.1, head, 0.06); bk.scale.set(1.15 * fw, 1, 0.75);
     for (const sd of [-1, 1]) C(0.045, 0.18, hairC, sd * 0.2 * fw, -0.1, -0.02, head, 0.1);
@@ -531,6 +550,7 @@ function makePerson(a = {}) {
     for (const sd of [-1, 1]) P(new THREE.TorusGeometry(0.068, 0.009, 8, 24), '#141014', sd * 0.085 * fw, 0.04, 0.215, head, 0, { basic: true });
     P(new THREE.BoxGeometry(0.05, 0.009, 0.009), '#141014', 0, 0.05, 0.225, head, 0, { basic: true });
   }
+  if (a.cuello_alto) P(new THREE.CylinderGeometry(0.1, 0.115, 0.1, 16), shirt, 0, 1.19, 0, body, 0.07);
   if (a.estatura) root.scale.setScalar(a.estatura);
   root.userData = { legL, legR, armL, armR, body, head, phase: Math.random() * 6 };
   return root;

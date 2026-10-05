@@ -214,7 +214,7 @@ function mirror(src) {
 // Devuelve { down:[f0,f1,f2], up:[...], left:[...], right:[...] }
 export function buildCharacter(apariencia = {}) {
   const a = apariencia;
-  const estilo = (a.peinado || 'corto').toLowerCase();
+  const estilo = ((a.peinado || 'corto').toLowerCase() === 'tupe' ? 'corto' : (a.peinado || 'corto').toLowerCase());
   const frames = {};
   for (const dir of ['down', 'up', 'left']) {
     const base = dir === 'down' ? DOWN : dir === 'up' ? UP : LEFT;

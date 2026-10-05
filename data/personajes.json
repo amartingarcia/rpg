@@ -8,7 +8,8 @@
     "peinado": "corto, largo, coleta, moño, rizado, cresta, entradas, calvo",
     "ropa": "camiseta, pantalon y zapatos: rojo, azul, celeste, verde, amarillo, naranja, morado, rosa, marrón, beige, vaquero, granate, caqui, negro, blanco, gris (o #rrggbb)",
     "extras": "barba, gafas, gorra (true o un color), vestido, musculoso, gordito: true. También: complexion (delgado, normal, fuerte, gordito), ojos (color), estatura (1 = normal, 1.1 = más alto)",
-    "frases": "cada vez que hablas con alguien dice una frase distinta. Si una frase es una lista [\"...\", \"...\"], se muestra en varias páginas seguidas."
+    "frases": "cada vez que hablas con alguien dice una frase distinta. Si una frase es una lista [\"...\", \"...\"], se muestra en varias páginas seguidas.",
+    "cara_3d": "Solo 3D: cara (normal, ancha, estrecha, redonda), cejas (finas, gruesas), ceja (fruncida, arqueada), ojos (color), nariz (grande, pequeña), sonrisa (amplia, ladeada, seria), peinado tupe, cuello_alto: true, mangas: largas"
   },
   "jugador": {
     "nombre": "Tú",
@@ -153,26 +154,34 @@
       "mira": "down",
       "pasea": false,
       "apariencia": {
-        "piel": "clara",
-        "pelo": "castaño",
-        "peinado": "corto",
-        "camiseta": "azul",
-        "pantalon": "vaquero",
-        "zapatos": "blanco"
+        "piel": "#cf9870",
+        "pelo": "#1c1512",
+        "peinado": "tupe",
+        "camiseta": "#3a2a24",
+        "pantalon": "#d9ceb8",
+        "zapatos": "blanco",
+        "complexion": "delgado",
+        "ojos": "#3a2417",
+        "cejas": "gruesas",
+        "sonrisa": "ladeada",
+        "cuello_alto": true,
+        "mangas": "largas"
       },
       "frases": [
-        "¡Bienvenido a la Casa de las Carcasas!",
-        "¿Qué móvil tienes? Seguro que le tengo funda.",
+        "¡Bienvenido a la Casa de las Carcasas! Aquí se viene a gastar, no a mirar.",
+        "¿Qué móvil tienes? Ese está desnudo. Una funda, ya.",
         [
-          "Lo mío es que cada móvil tenga su carcasa.",
-          "Y que salga desde Jaraíz."
+          "Yo empecé vendiendo fundas desde Jaraíz.",
+          "Ahora las vendo a medio mundo. Tú ríete, pero yo me río del banco."
         ],
         [
           "Mi novia, la Koplovich, dice que trabajo demasiado.",
-          "Yo digo que tengo que vender fundas y encanto. Todo a la vez."
+          "Yo le digo que si no trabajo, no hay carcasas. Y sin carcasas, no hay yate."
         ],
-        "Ligar es como vender carcasas: hay que ofrecer el modelo adecuado en el momento justo.",
-        "Hoy han llegado colores nuevos. Echa un ojo."
+        "Ligar es como vender: se trata de ofrecer el modelo adecuado en el momento justo.",
+        "A mí me dicen las cosas a la cara, y yo igual. Sin pelos en la lengua. Tu móvil es feo, por cierto.",
+        "Te lo digo como amigo y como jefe: no seas rácano. Compra dos.",
+        "Hoy han llegado colores nuevos. Y yo vengo con la mejor de las sonrisas."
       ]
     },
     {
@@ -191,7 +200,10 @@
         "pantalon": "negro",
         "zapatos": "negro",
         "gorra": "azul",
-        "musculoso": true
+        "musculoso": true,
+        "sonrisa": "amplia",
+        "cejas": "gruesas",
+        "cara": "ancha"
       },
       "frases": [
         "Alto. Policía del amor. ¿Has dado hoy un abrazo?",
@@ -223,7 +235,8 @@
         "camiseta": "verde",
         "pantalon": "vaquero",
         "gafas": true,
-        "gordito": true
+        "gordito": true,
+        "sonrisa": "amplia"
       },
       "frases": [
         "Shhh, que va a empezar la peli.",
@@ -253,7 +266,10 @@
         "pantalon": "negro",
         "zapatos": "blanco",
         "ojos": "#2a1a10",
-        "estatura": 1.05
+        "estatura": 1.05,
+        "cejas": "gruesas",
+        "ceja": "arqueada",
+        "sonrisa": "amplia"
       },
       "frases": [
         "¡¿QUÉ PASA?! ¿Qué hacemos hoy? Dime que hay fiesta, porfa.",
@@ -281,7 +297,10 @@
         "camiseta": "rojo",
         "pantalon": "azul",
         "zapatos": "verde",
-        "estatura": 0.85
+        "estatura": 0.85,
+        "ceja": "fruncida",
+        "cara": "redonda",
+        "sonrisa": "seria"
       },
       "frases": [
         "¡QUE NO! ¡QUE ES MÍO!",
